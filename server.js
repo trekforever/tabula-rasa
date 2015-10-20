@@ -21,40 +21,30 @@ var STATS = require('./src/stats.json');
 var HASH  = STATS.hash;
 var STYLE_URL   = STATS.publicPath + "main.css?" + STATS.hash;
 
-// Development Settings Only
-if (ENV === DEVELOPMENT) {
-  var webpack          = require('webpack');
-  var DevServer = require('webpack-dev-server');
-  var WebpackDevConfig = require('./webpack/dev-config');
-  var webpackDevServer = new DevServer(webpack(WebpackDevConfig), {
-    publicPath  : WebpackDevConfig.output.publicPath,
-    contentBase : "http://localhost:"+ PORT +"/",
-    hot         : true,
-    progress    : true,
-    stats       : {
-      colors: true
-    }
-  });
-  if(!WebpackDevConfig.opts.separateStylesheet) {
-    STYLE_URL = "";
-  }
-  webpackDevServer.listen(WebpackDevConfig.opts.port, function(err, result) {
-    if (err) {
-      console.log(err);
-    }
-  });
-
-  console.log('Webpack development web server started on port: ' + WebpackDevConfig.opts.port);
-
-}
-
 // Main App Settings
 var server = express();
-
 // Pre-use common options
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
 server.disable('x-powered-by');
+
+// Development Settings Only
+if (ENV === DEVELOPMENT) {
+  var webpack          = require('webpack');
+  var WebpackDevConfig = require('./webpack/dev-config');
+  var compiler         = webpack(WebpackDevConfig);
+  
+  server.use(require('webpack-dev-middleware')(compiler, {
+    noInfo: true,
+    publicPath: WebpackDevConfig.output.publicPath
+  }));
+  server.use(require('webpack-hot-middleware')(compiler));
+
+  // Have to disable separate stylesheet for hot-reload or else it won't work
+  STYLE_URL = "";
+
+}
+
 
 var scripts = ['commons.js', 'main.js'];
 

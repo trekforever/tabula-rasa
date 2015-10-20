@@ -6,7 +6,7 @@ var loadByExtensions = require("./utils/loadByExtensions");
 
 module.exports = function(options) {
     var entry = {
-        main: options.hotComponents ? ['webpack-dev-server/client?http://localhost:'+options.port+'/', 'webpack/hot/only-dev-server', './client'] : './client',
+        main: options.hotComponents ? ['webpack-hot-middleware/client', './client'] : './client'
     };
 
     var loaders = {
@@ -32,14 +32,12 @@ module.exports = function(options) {
     var modulesDirectories = ["vendor", "node_modules", "src"];
     var extensions = ["", ".web.js", ".js", ".jsx"];
     var root = path.join(__dirname, "../src");
-    var publicPath = options.devServer ?
-        "http://localhost:"+options.port+"/" :
-        "/";
+    var publicPath = "/";
     var output = {
         path: path.join(__dirname, "../dist"),
         publicPath: publicPath,
         filename: "[name].js" + (options.longTermCaching ? "?[chunkhash]" : ""),
-        chunkFilename: (options.devServer ? "[id].js" : "[name].js") + (options.longTermCaching ? "?[chunkhash]" : ""),
+        chunkFilename: (options.longTermCaching ? "?[chunkhash]" : ""),
         sourceMapFilename: "debugging/[file].map",
         pathinfo: options.debug
     };
@@ -111,6 +109,7 @@ module.exports = function(options) {
         plugins.push(new ExtractTextPlugin("[name].css" + (options.longTermCaching ? "?[contenthash]" : "")));
     }
     if(options.hotComponents) {
+        plugins.push(new webpack.optimize.OccurenceOrderPlugin());
         plugins.push(new webpack.HotModuleReplacementPlugin());
     }
     if(options.minimize) {

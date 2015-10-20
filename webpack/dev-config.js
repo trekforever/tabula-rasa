@@ -4,6 +4,5 @@ module.exports = require("./common")({
     devtool: "source-map",
     debug: true,
     commonsChunk: true,
-    separateStylesheet: false,
-    port: 2992
+    separateStylesheet: false
 });
