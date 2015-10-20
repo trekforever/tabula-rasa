@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="tabula, rasa">
+    <meta name="description" content="Tabula Rasa">
+    <meta name="author" content="trekforever">
+    <title> Tabula Rasa </title>
+    <% if (styles) { %>
+        <link rel="stylesheet" href="<%- styles %>" >
+    <% } %>
+</head>
+<body>
+    
+    <%  _.each(scripts, function(script) { %>
+
+        <script type="text/javascript" src="<%- script %>" ></script>
+
+    <% }) %>
+</body>
+</html>

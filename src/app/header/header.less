@@ -1,0 +1,39 @@
+.header {
+    background-color: #222222;
+    border-color: #121212;
+    min-height: 50px;
+    margin-bottom: 25px;
+    a {
+      text-decoration: none;
+      color: inherit;
+      &:hover {
+        color: inherit;
+      }
+    }
+    .meta {
+      color: #FFF;
+      text-align: center;
+      padding: 15px;
+      font-size: 14px;
+      .info {
+        display: inline-block;
+      }
+    }
+    h1 {
+      color: #FFF;
+      font-size: 20px;
+      text-align: center;
+      padding: 14px;
+      margin: 0;
+    }
+}
+@media (min-width: 550px) {
+  .header {
+    h1 {
+      float: left;
+    }
+    .meta {
+      float: right;
+    }
+  }  
+}
