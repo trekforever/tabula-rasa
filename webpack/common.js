@@ -20,7 +20,7 @@ module.exports = function(options) {
         "less": "css!autoprefixer!less",
     },
     additionalLoaders = [
-         { test: /\.jsx$|\.js$/, loader: options.hotComponents ? "react-hot!babel?stage=0" : "babel?stage=0", exclude:/node_modules|vendor/ }
+         { test: /\.jsx$|\.js$/, loader: "babel?stage=0", exclude:/node_modules|vendor/ }
     ],
     aliasLoader = {
 
@@ -57,9 +57,11 @@ module.exports = function(options) {
             fs.writeFileSync(path.join(__dirname, "../src", "stats.json"), JSON.stringify(jsonStats));
           })
         },
-        new webpack.PrefetchPlugin("bluebird"),
         new webpack.PrefetchPlugin("react/addons"),
-        new webpack.PrefetchPlugin("react/lib/ReactComponentBrowserEnvironment")
+        new webpack.PrefetchPlugin("react/lib/ReactComponentBrowserEnvironment"),
+        new webpack.DefinePlugin({
+            DEBUG: options.debug 
+        })
     ];
     if(options.commonsChunk) {
         plugins.push(new webpack.optimize.CommonsChunkPlugin("commons", "commons.js" + (options.longTermCaching ? "?[chunkhash]" : "")));

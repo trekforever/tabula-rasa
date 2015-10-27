@@ -3,6 +3,7 @@ module.exports = [
         commonsChunk: true,
         longTermCaching: true,
         separateStylesheet: true,
-        minimize: true
+        minimize: true,
+        debug: false
     })
 ];
